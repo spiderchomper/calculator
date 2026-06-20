@@ -15,7 +15,7 @@ function divide(num1, num2) {
   else return Math.round((num1 / num2) * 10000) / 10000;
 }
 
-let firstNum, secondNum, operator, toClr;
+let firstNum, secondNum, operator, toClr, result;
 
 function operate(num1, oper, num2) {
   switch (oper) {
@@ -31,70 +31,87 @@ function operate(num1, oper, num2) {
 }
 const display = document.querySelector("#display");
 display.textContent = "0";
-const buttons = document.querySelectorAll("button");
-const backspace = document.getElementById("bksp");
 
-buttons.forEach((button) => {
-  document.addEventListener("keydown", (e) => {
-    if (e.key === button.textContent) button.click();
-    else if (e.code === "Backspace") {
-      e.stopPropagation();
-      backspace.click();
-    }
-  });
-  // button listener
+function clrVar() {
+  // clears math variables
+  firstNum = null;
+  secondNum = null;
+  operator = null;
+}
+const numBtns = document.querySelectorAll(".num"); // numeric btns + decimal handling
+numBtns.forEach((button) => {
   button.addEventListener("click", (event) => {
     const clicked = event.target.textContent;
-    const btnType = event.target.className;
-    let result;
 
-    function clrVar() {
-      firstNum = null;
-      secondNum = null;
-      operator = null;
+    if ((display.textContent === "0" && clicked !== ".") || toClr) {
+      display.textContent = clicked;
+    } else {
+      if (
+        (!display.textContent.includes(".") && clicked === ".") ||
+        clicked !== "."
+      ) {
+        display.textContent += clicked;
+      }
     }
-    switch (btnType) {
-      case "num": {
-        if ((display.textContent === "0" && clicked !== ".") || toClr) {
-          display.textContent = clicked;
-        } else {
-          if (
-            (!display.textContent.includes(".") && clicked === ".") ||
-            clicked !== "."
-          ) {
-            display.textContent += clicked;
-          }
-        }
-        toClr = 0;
-        break;
-      }
-      case "oper": {
-        if (!firstNum && !operator) {
-          firstNum = parseFloat(display.textContent);
-        } else if (!secondNum && !toClr) {
-          secondNum = parseFloat(display.textContent);
-          firstNum = operate(firstNum, operator, secondNum);
-          display.textContent = firstNum;
-          if (!Number(firstNum)) clrVar();
-        }
-        operator = clicked;
-        toClr = 1;
-        if (operator === "=") {
-          clrVar();
-        }
-        break;
-      }
-      case "clr": {
-        clrVar();
-        display.textContent = "0";
-        break;
-      }
-      case "bksp": {
-        if (!toClr) {
-          display.textContent = display.textContent.slice(0, -1);
-        }
-        break;
-      }
+    toClr = 0;
+  });
+});
+
+const operBtns = document.querySelectorAll(".oper"); // operands handling
+operBtns.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const clicked = event.target.textContent;
+
+    if (!firstNum && !operator) {
+      firstNum = parseFloat(display.textContent);
+    } else if (!toClr) {
+      secondNum = parseFloat(display.textContent);
+      firstNum = operate(firstNum, operator, secondNum);
+      display.textContent = firstNum;
+      if (!Number(firstNum)) clrVar();
+    }
+    operator = clicked;
+    toClr = 1;
+    if (operator === "=") {
+      clrVar();
     }
   });
+});
+
+const clrBtn = document.querySelector("#clr"); //define special btns
+clrBtn.addEventListener("click", (event) => {
+  clrVar();
+  display.textContent = "0";
+});
+
+const bkspBtn = document.querySelector("#bksp");
+bkspBtn.addEventListener("click", (event) => {
+  display.textContent.length > 1
+    ? (display.textContent = display.textContent.slice(0, -1))
+    : (display.textContent = "0");
+});
+
+const enter = document.getElementById("equals");
+
+document.addEventListener("keydown", (event) => {
+  //keyboard support
+  const isNum = /\d|\./;
+  const isOper = "+-/=";
+  if (isNum.test(event.key)) {
+    const targetBtn = Array.from(numBtns).find(
+      (btn) => btn.textContent === event.key,
+    );
+    targetBtn.click();
+  } else if (isOper.includes(event.key)) {
+    const targetBtn = Array.from(operBtns).find(
+      (btn) => btn.textContent === event.key,
+    );
+    targetBtn.click();
+  } else if (event.key === "Backspace") bkspBtn.click();
+  else if (event.key === "Enter") {
+    event.preventDefault();
+    enter.click();
+  } else if (event.key === "c") {
+    clrBtn.click();
+  }
 });
