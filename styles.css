@@ -1,8 +1,100 @@
+@font-face {
+  font-family: lcd;
+  src:
+    url(Open\ 24\ Display\ St.woff2) format("woff2"),
+    url(Open\ 24\ Display\ St.woff) format("woff");
+  font-display: swap;
+  ascent-override: 100%;
+}
+
+* {
+  font-family: lcd;
+}
+body {
+  background-color: #90c67c;
+}
 .calc-body {
-  margin: auto;
-  padding: 15px;
+  margin: 75px auto auto auto;
   width: 300px;
-  height: 400px;
-  background-color: lightgreen;
+  height: 420px;
+  padding: 5px;
+  background-color: #67ae6e;
+  border: 3px solid #e1eebc;
   border-radius: 20px;
+  box-shadow: -5px 5px #328e6e;
+  display: flex;
+  flex-direction: column;
+}
+
+#display {
+  margin: 10px auto 10px auto;
+  padding: 0px 7px 7px 0px;
+  width: 250px;
+  height: 70px;
+  background-color: #e1eebc;
+  border-radius: 10px;
+  text-align: right;
+  font-size: 70px;
+  color: #274e37;
+}
+
+button {
+  background-color: #328e6e;
+  color: #e1eebc;
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  margin: 2px;
+  font-size: 45px;
+  border: 2px solid #e1eebc;
+  box-shadow: -2px 2px #328e6e;
+}
+
+button:hover {
+  filter: brightness(85%);
+  box-shadow: none;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+}
+
+#numpad {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 200px;
+}
+
+#pos-int-keys {
+  display: flex;
+  flex: auto;
+  flex-wrap: wrap-reverse;
+}
+
+#zero {
+  width: 120px;
+}
+
+#oper-keys {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.oper {
+  background-color: #93b82e;
+  color: #274e37;
+}
+
+#clr,
+#bksp {
+  background-color: #ddda48;
+  color: #274e37;
+}
+
+#clr {
+  width: 120px;
 }

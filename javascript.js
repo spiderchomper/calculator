@@ -96,7 +96,7 @@ const enter = document.getElementById("equals");
 document.addEventListener("keydown", (event) => {
   //keyboard support
   const isNum = /\d|\./;
-  const isOper = "+-/=";
+  const isOper = "+-/=*";
   if (isNum.test(event.key)) {
     const targetBtn = Array.from(numBtns).find(
       (btn) => btn.textContent === event.key,
