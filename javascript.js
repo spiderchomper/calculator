@@ -11,8 +11,8 @@ function multiply(num1, num2) {
 }
 
 function divide(num1, num2) {
-  if (num2 === 0) return "hellNo :)";
-  else return num1 / num2;
+  if (num2 === 0) return "nopesies ;)";
+  else return Math.round((num1 / num2) * 10000) / 10000;
 }
 
 let firstNum, secondNum, operator, toClr;
@@ -38,6 +38,12 @@ buttons.forEach((button) => {
     const clicked = event.target.textContent;
     const btnType = event.target.className;
     let result;
+
+    function clrVar() {
+      firstNum = null;
+      secondNum = null;
+      operator = null;
+    }
     switch (btnType) {
       case "num": {
         if (display.textContent === "0" || toClr) {
@@ -50,27 +56,28 @@ buttons.forEach((button) => {
       }
       case "oper": {
         if (!firstNum && !operator) {
-          firstNum = parseInt(display.textContent);
+          firstNum = parseFloat(display.textContent);
         } else if (!secondNum && !toClr) {
-          secondNum = parseInt(display.textContent);
+          secondNum = parseFloat(display.textContent);
           firstNum = operate(firstNum, operator, secondNum);
           display.textContent = firstNum;
-          secondNum = null;
+          if (!Number(firstNum)) clrVar();
         }
         operator = clicked;
         toClr = 1;
         if (operator === "=") {
-          firstNum = null;
-          secondNum = null;
-          operator = null;
+          clrVar();
         }
         break;
       }
       case "clr": {
-        firstNum = null;
-        secondNum = null;
-        operator = null;
+        clrVar();
         display.textContent = "0";
+      }
+      case "bksp": {
+        if (!toClr) {
+          display.textContent = display.textContent.slice(0, -1);
+        }
       }
     }
   });
