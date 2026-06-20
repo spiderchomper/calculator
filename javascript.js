@@ -37,29 +37,40 @@ buttons.forEach((button) => {
   button.addEventListener("click", (event) => {
     const clicked = event.target.textContent;
     const btnType = event.target.className;
+    let result;
     switch (btnType) {
       case "num": {
         if (display.textContent === "0" || toClr) {
           display.textContent = clicked;
-          toClr = 0;
-        } else display.textContent += clicked;
+        } else {
+          display.textContent += clicked;
+        }
+        toClr = 0;
         break;
       }
       case "oper": {
-        if (!firstNum) {
+        if (!firstNum && !operator) {
           firstNum = parseInt(display.textContent);
-          operator = clicked;
-          console.log(firstNum);
-        } else {
+        } else if (!secondNum && !toClr) {
           secondNum = parseInt(display.textContent);
-          let result = operate(firstNum, operator, secondNum);
-          display.textContent = result;
-          operator = clicked;
+          firstNum = operate(firstNum, operator, secondNum);
+          display.textContent = firstNum;
+          secondNum = null;
         }
+        operator = clicked;
         toClr = 1;
+        if (operator === "=") {
+          firstNum = null;
+          secondNum = null;
+          operator = null;
+        }
         break;
       }
       case "clr": {
+        firstNum = null;
+        secondNum = null;
+        operator = null;
+        display.textContent = "0";
       }
     }
   });
