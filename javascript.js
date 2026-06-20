@@ -23,7 +23,7 @@ function operate(num1, oper, num2) {
       return add(num1, num2);
     case "-":
       return subtract(num1, num2);
-    case "x":
+    case "*":
       return multiply(num1, num2);
     case "/":
       return divide(num1, num2);
@@ -32,8 +32,17 @@ function operate(num1, oper, num2) {
 const display = document.querySelector("#display");
 display.textContent = "0";
 const buttons = document.querySelectorAll("button");
+const backspace = document.getElementById("bksp");
 
 buttons.forEach((button) => {
+  document.addEventListener("keydown", (e) => {
+    if (e.key === button.textContent) button.click();
+    else if (e.code === "Backspace") {
+      e.stopPropagation();
+      backspace.click();
+    }
+  });
+  // button listener
   button.addEventListener("click", (event) => {
     const clicked = event.target.textContent;
     const btnType = event.target.className;
@@ -46,10 +55,15 @@ buttons.forEach((button) => {
     }
     switch (btnType) {
       case "num": {
-        if (display.textContent === "0" || toClr) {
+        if ((display.textContent === "0" && clicked !== ".") || toClr) {
           display.textContent = clicked;
         } else {
-          display.textContent += clicked;
+          if (
+            (!display.textContent.includes(".") && clicked === ".") ||
+            clicked !== "."
+          ) {
+            display.textContent += clicked;
+          }
         }
         toClr = 0;
         break;
@@ -73,11 +87,13 @@ buttons.forEach((button) => {
       case "clr": {
         clrVar();
         display.textContent = "0";
+        break;
       }
       case "bksp": {
         if (!toClr) {
           display.textContent = display.textContent.slice(0, -1);
         }
+        break;
       }
     }
   });
