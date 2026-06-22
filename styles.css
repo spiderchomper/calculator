@@ -9,6 +9,7 @@
 
 * {
   font-family: lcd;
+  box-sizing: border-box;
 }
 body {
   background-color: #90c67c;
@@ -17,7 +18,7 @@ body {
   margin: 75px auto auto auto;
   width: 280px;
   height: 420px;
-  padding: 5px;
+  padding: 0px 0px 7px 0px;
   background-color: #67ae6e;
   border: 3px solid #e1eebc;
   border-radius: 20px;
@@ -28,12 +29,14 @@ body {
 
 #display {
   margin: 10px auto 10px auto;
-  padding: 0px 7px 7px 0px;
+  padding: 0px 7px 0px 0px;
   width: 250px;
   height: 70px;
   background-color: #e1eebc;
   border-radius: 10px;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   font-size: 70px;
   color: #274e37;
   box-shadow: inset -3px 3px #328e6e;
